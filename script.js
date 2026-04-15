@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isMenuOpen = !isMenuOpen;
         if(isMenuOpen) {
             mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
             // small delay to allow display flex to apply before transitioning opacity
             setTimeout(() => {
                 mobileMenu.classList.remove('opacity-0');
@@ -64,10 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
             mobileMenu.classList.remove('opacity-100');
             mobileMenu.classList.add('opacity-0');
             setTimeout(() => {
+                mobileMenu.classList.remove('flex');
                 mobileMenu.classList.add('hidden');
             }, 300); // match duration
             menuToggle.innerHTML = '<i class="fa-solid fa-bars-staggered"></i>';
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = '';
         }
     }
 
