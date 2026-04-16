@@ -1,17 +1,90 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- Dynamic Images ---
+    // --- Dynamic Images & Original Assets ---
+    // User added new images: cake2.jpeg to cake17.jpeg
     const imageMap = {
-        'hero-img': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1089&auto=format&fit=crop', // Unsplash dark cake (placeholder)
-        'kitchen-img': 'assets/kitchen_baking.png', // The generated kitchen image
-        'cake-1-img': 'https://images.unsplash.com/photo-1606890737302-7c3d2e5b7b9f?q=80&w=1024&auto=format&fit=crop', // Unsplash Chocolate cake
-        'cake-2-img': 'assets/red_velvet.png', // Red velvet
-        'cake-3-img': 'assets/fruit_cake.png' // Fruit cake
+        'hero-img': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1089&auto=format&fit=crop', 
+        'kitchen-img': 'assets/kitchen_baking.png', 
+        'cake-1-img': 'assets/cake2.jpeg', // Fudge Brownie Cake visual
+        'cake-2-img': 'assets/cake3.jpeg', // Velvet
+        'cake-3-img': 'assets/cake4.jpeg' // Fruit Cake
     };
 
     for (const [id, src] of Object.entries(imageMap)) {
         const el = document.getElementById(id);
         if(el) el.src = src;
+    }
+
+    // --- Video Reel & Gallery Logic ---
+    const allCakes = Array.from({length: 16}, (_, i) => `assets/cake${i+2}.jpeg`); // cake2 to cake17
+    
+    // Setup Marquee Track
+    const track1 = document.getElementById('marquee-track-1');
+    const track2 = document.getElementById('marquee-track-2');
+    
+    if (track1 && track2) {
+        let marqueeHTML = '';
+        allCakes.forEach((src) => {
+            marqueeHTML += `
+                <div class="w-64 h-80 rounded-[30px] overflow-hidden flex-shrink-0 relative marquee-card shadow-lg bg-white dark:bg-dark-surface border border-blush/20 dark:border-white/5">
+                    <img src="${src}" alt="Gallery Cake" class="w-full h-full object-cover">
+                </div>
+            `;
+        });
+        track1.innerHTML = marqueeHTML;
+        track2.innerHTML = marqueeHTML; // Duplicate for infinite scroll
+    }
+
+    // Setup Video Reel
+    const reelImg = document.getElementById('reel-current-img');
+    const reelPlayBtn = document.getElementById('reel-play-btn');
+    const playIcon = document.getElementById('play-icon');
+    const progressBar = document.getElementById('reel-progress');
+    
+    if (reelImg && reelPlayBtn) {
+        let reelInterval;
+        let isPlaying = true; // Auto-play initially
+        let currentIndex = 0;
+        
+        function updateReel() {
+            currentIndex = (currentIndex + 1) % allCakes.length;
+            // Add tiny fade effect
+            reelImg.style.opacity = '0.8';
+            setTimeout(() => {
+                reelImg.src = allCakes[currentIndex];
+                reelImg.style.opacity = '1';
+                // Update progress bar
+                progressBar.style.width = `${((currentIndex + 1) / allCakes.length) * 100}%`;
+            }, 150); // fast transition for "stop motion" feel
+        }
+
+        function toggleReel() {
+            if (isPlaying) {
+                clearInterval(reelInterval);
+                playIcon.classList.remove('fa-pause');
+                playIcon.classList.add('fa-play');
+                reelImg.style.filter = 'brightness(0.7)';
+                isPlaying = false;
+            } else {
+                updateReel();
+                reelInterval = setInterval(updateReel, 1500); // Change image every 1.5 seconds
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-pause');
+                reelImg.style.filter = 'brightness(1)';
+                isPlaying = true;
+            }
+        }
+
+        // Start reel automatically
+        reelInterval = setInterval(updateReel, 1500);
+        
+        reelPlayBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // prevent click from triggering anything underneath
+            toggleReel();
+        });
+        
+        // Also toggle on image click
+        document.getElementById('video-reel').addEventListener('click', toggleReel);
     }
 
     // --- Theme Toggle Setup ---
@@ -110,5 +183,55 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }, 100);
+
+    // --- Modal Logic ---
+    const customizeBtn = document.getElementById('customize-btn');
+    const contactModal = document.getElementById('contact-modal');
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    const cardContent = document.getElementById('card-content');
+
+    function openModal(e) {
+        if(e) e.preventDefault();
+        contactModal.classList.remove('hidden');
+        contactModal.classList.add('flex');
+        
+        // Small delay to allow display flex to apply before opacity transition
+        setTimeout(() => {
+            contactModal.classList.remove('opacity-0');
+            contactModal.classList.add('opacity-100');
+            cardContent.classList.remove('scale-95');
+            cardContent.classList.add('scale-100');
+        }, 10);
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        contactModal.classList.remove('opacity-100');
+        contactModal.classList.add('opacity-0');
+        cardContent.classList.remove('scale-100');
+        cardContent.classList.add('scale-95');
+        
+        setTimeout(() => {
+            contactModal.classList.remove('flex');
+            contactModal.classList.add('hidden');
+        }, 300);
+        document.body.style.overflow = '';
+    }
+
+    if (customizeBtn) {
+        customizeBtn.addEventListener('click', openModal);
+    }
+
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeModal);
+    }
+
+    if (contactModal) {
+        contactModal.addEventListener('click', (e) => {
+            if (e.target === contactModal) {
+                closeModal();
+            }
+        });
+    }
 
 });
