@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let marqueeHTML = '';
         allCakes.forEach((src) => {
             marqueeHTML += `
-                <div class="w-64 h-80 rounded-[30px] overflow-hidden flex-shrink-0 relative marquee-card shadow-lg bg-white dark:bg-dark-surface border border-blush/20 dark:border-white/5">
+                <div class="w-48 h-64 sm:w-64 sm:h-80 rounded-[24px] sm:rounded-[30px] overflow-hidden flex-shrink-0 relative marquee-card shadow-lg bg-white dark:bg-dark-surface border border-blush/20 dark:border-white/5">
                     <img src="${src}" alt="Gallery Cake" class="w-full h-full object-cover">
                 </div>
             `;
