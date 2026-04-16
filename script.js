@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const imageMap = {
         'hero-img': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1089&auto=format&fit=crop', 
         'kitchen-img': 'assets/kitchen_baking.png', 
-        'cake-1-img': 'assets/cake2.jpeg', // Fudge Brownie Cake visual
-        'cake-2-img': 'assets/cake3.jpeg', // Velvet
-        'cake-3-img': 'assets/cake4.jpeg' // Fruit Cake
+        'cake-1-img': 'assets/cake2.jpeg', // Birthday Cakes
+        'cake-2-img': 'assets/cake21.jpeg', // New Year Cakes
+        'cake-3-img': 'assets/cake20.jpeg' // Christmas Cake
     };
 
     for (const [id, src] of Object.entries(imageMap)) {
@@ -218,9 +218,14 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.style.overflow = '';
     }
 
+    const orderNowBtns = document.querySelectorAll('.order-now-btn');
     if (customizeBtn) {
         customizeBtn.addEventListener('click', openModal);
     }
+    
+    orderNowBtns.forEach(btn => {
+        btn.addEventListener('click', openModal);
+    });
 
     if (closeModalBtn) {
         closeModalBtn.addEventListener('click', closeModal);
