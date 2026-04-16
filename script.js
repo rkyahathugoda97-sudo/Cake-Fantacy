@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'kitchen-img': 'assets/kitchen_baking.png', 
         'cake-1-img': 'assets/cake2.jpeg', // Birthday Cakes
         'cake-2-img': 'assets/cake21.jpeg', // New Year Cakes
-        'cake-3-img': 'assets/cake20.jpeg' // Christmas Cake
+        'cake-3-img': 'assets/Cake22.jpeg' // Christmas Cake
     };
 
     for (const [id, src] of Object.entries(imageMap)) {
