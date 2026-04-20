@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Dynamic Images & Original Assets ---
     // User added new images: cake2.jpeg to cake17.jpeg
     const imageMap = {
-        'hero-img': 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?q=80&w=1089&auto=format&fit=crop', 
         'kitchen-img': 'assets/kitchen_baking.png', 
         'cake-1-img': 'assets/cake2.jpeg', // Birthday Cakes
         'cake-2-img': 'assets/cake21.jpeg', // New Year Cakes
@@ -13,6 +12,36 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const [id, src] of Object.entries(imageMap)) {
         const el = document.getElementById(id);
         if(el) el.src = src;
+    }
+
+    // --- Hero Slider Logic ---
+    const heroImg = document.getElementById('hero-img');
+    const sliderImages = [
+        'assets/cake-23.jpeg',
+        'assets/cake-24.jpeg',
+        'assets/cake-25.jpeg',
+        'assets/cake-26.jpeg',
+        'assets/cake-27.jpeg',
+        'assets/cake-28.jpeg',
+        'assets/cake-29.jpeg'
+    ];
+    
+    if (heroImg) {
+        let heroIndex = 0;
+        // Preload images
+        sliderImages.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+
+        setInterval(() => {
+            heroImg.style.opacity = '0';
+            setTimeout(() => {
+                heroIndex = (heroIndex + 1) % sliderImages.length;
+                heroImg.src = sliderImages[heroIndex];
+                heroImg.style.opacity = '1';
+            }, 700); // Wait for transition duration
+        }, 4000); // Rotate every 4 seconds
     }
 
     // --- Video Reel & Gallery Logic ---
